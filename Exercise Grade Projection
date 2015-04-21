@@ -1,10 +1,9 @@
-## Establishing the working directory
-
-## Untilizing specific libraries
 library(caret)
 library(rpart)
+library(rattle)
 library(rpart.plot)
 library(randomForest)
+library(RColorBrewer)
 library(corrplot)
 
 ## importing in the training data file
@@ -42,7 +41,9 @@ train <- cleanup(train)
 set.seed(2015)
 
 ## creating training and cross validation data sets
-inTrain <- createDataPartition(train$classe, p=0.60, list=False)
+inTrain <- createDataPartition(train$classe, 
+                               p = 0.60,
+                               list = FALSE)
         ## 60% of data goes into train data
 train <- train[inTrain, ]
         ## remaining 40% goes into cross validation data
@@ -97,11 +98,20 @@ test <- cleanup(test)
 test$prediction <- predict(model, test)
 test$prediction
 
+## Correlation matrix of the data
+plot <- featurePlot(x = train, y = train$classe, 
+            plot = "pairs")
+plot
 
+## Decision Tree Plot
+tree <- rpart(classe ~ ., data = train, method = "class") 
+fancytree <- fancyRpartPlot(tree)
+basictree <- prp(tree)
 
+corrPlot <- cor(trainData[, -length(names(trainData))])
+corrplot(corrPlot, method="color")
 
-
-## kicking out the predictions
+## prediction out puts
 pml_write_files = function(x){
         n = length(x)
         for(i in 1:n){
@@ -110,5 +120,4 @@ pml_write_files = function(x){
         }
 }
 
-## applying the kickout function
 pml_write_files(test$prediction)
