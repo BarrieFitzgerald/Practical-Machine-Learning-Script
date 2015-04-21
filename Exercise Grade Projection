@@ -1,3 +1,7 @@
+## Working directory
+
+
+## libraries used
 library(caret); library(rpart)
 library(rattle); library(rpart.plot)
 library(randomForest); library(RColorBrewer)
@@ -96,17 +100,14 @@ test$prediction <- predict(model, test)
 test$prediction
 
 ## Correlation matrix of the data
-plot <- featurePlot(x = train, y = train$classe, 
-            plot = "pairs")
-plot
+## plot <- featurePlot(x = train, y = train$classe, plot = "pairs")
+corrPlot <- cor(train[,-max(length(train))])
+corrplot(corrPlot, method="color")
 
 ## Decision Tree Plot
 tree <- rpart(classe ~ ., data = train, method = "class") 
 fancytree <- fancyRpartPlot(tree)
 basictree <- prp(tree)
-
-corrPlot <- cor(trainData[, -length(names(trainData))])
-corrplot(corrPlot, method="color")
 
 ## prediction out puts
 pml_write_files = function(x){
