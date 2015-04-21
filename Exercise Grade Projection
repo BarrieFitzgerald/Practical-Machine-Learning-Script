@@ -1,9 +1,6 @@
-library(caret)
-library(rpart)
-library(rattle)
-library(rpart.plot)
-library(randomForest)
-library(RColorBrewer)
+library(caret); library(rpart)
+library(rattle); library(rpart.plot)
+library(randomForest); library(RColorBrewer)
 library(corrplot)
 
 ## importing in the training data file
